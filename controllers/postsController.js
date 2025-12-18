@@ -3,21 +3,29 @@ import postsArray from "../postsArray.js"
 
 // Index
 function index(req, res) {
-    res.send("lista dei post");
+    const risposta = {
+        count: postsArray.length,
+        results: postsArray
+    }
+    res.json(risposta)
 }
 
 
 //  Show
 function show(req, res) {
     const id = parseInt(req.params.id);
-    const resp = postsArray.find(post => post.id === id);
-    res.json({
-        post: resp,
-        message: "Dettagli di un singolo post"
-    });
+    const post = postsArray.find(post => post.id === id);
+    if (post !== undefined) {
+        res.json(post);
+    } else {
+        res.status(404);
+        res.json({
+            error: "Error 404",
+            message: "Not found post"
+        });
+    }
+
 }
-
-
 
 
 
@@ -40,8 +48,8 @@ function update(req, res) {
 
 
 //  Modify 
-function modify (req,res){
- const id = req.params.id;
+function modify(req, res) {
+    const id = req.params.id;
     res.send("aggiorna parzialemte post n." + id)
 }
 
@@ -49,10 +57,26 @@ function modify (req,res){
 
 
 //  Destroy
-function destroy (req,res){
- const id = req.params.id;
-    res.send("cancella post n." + id)
+function destroy(req, res) {
+    const id = parseInt(req.params.id);
+
+    const index = postsArray.findIndex(post => post.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            error: "Error 404",
+            message: "Not found post"
+        });
+    }
+    postsArray.splice(index, 1);
+    console.log(postsArray);
+
+    res.status(204);
 }
+
+
+   
+
 
 
 
