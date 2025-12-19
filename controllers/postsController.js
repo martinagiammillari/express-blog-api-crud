@@ -59,8 +59,30 @@ function create(req, res) {
 
 //  Update
 function update(req, res) {
-    const id = req.params.id;
-    res.send("aggiorna post n." + id)
+    const id = parseInt(req.params.id);
+    const post = postsArray.find((post) => post.id === id);
+    if (post === undefined) {
+        return res.status(404)
+        res.json({
+            error: "Error 404",
+            message: "Not found post"
+        });
+    }
+    const dati = req.body;
+    if (dati.titolo === undefined || dati.titolo.length === 0) {
+        res.status(400);
+        return res.json({
+            error: "client error",
+            message: "Il titolo è obbligatorio e non può essere vuoto"
+        })
+    }
+
+    post.titolo = dati.titolo,
+        post.contenuto = dati.contenuto,
+        post.immagine = dati.immagine,
+        post.tags = dati.tags
+
+        res.json(post);
 }
 
 
