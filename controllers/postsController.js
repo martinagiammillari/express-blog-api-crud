@@ -32,7 +32,26 @@ function show(req, res) {
 
 //  Create
 function create(req, res) {
-    res.send("creo nuovo post")
+    const dati = req.body;
+    if (dati.titolo === undefined || dati.titolo.length === 0) {
+        res.status(400);
+        return res.json({
+            error: "client error",
+            message: "Il titolo è obbligatorio e non può essere vuoto"
+        })
+    }
+
+    const newId = postsArray[postsArray.length - 1].id + 1;
+    const newPost = {
+        id: newId,
+        titolo: dati.titolo,
+        contenuto: dati.contenuto,
+        immagine: dati.immagine,
+        tags: dati.tags
+    };
+    postsArray.push(newPost);
+    res.status(201);
+    res.json(newPost);
 }
 
 
@@ -75,7 +94,7 @@ function destroy(req, res) {
 }
 
 
-   
+
 
 
 
