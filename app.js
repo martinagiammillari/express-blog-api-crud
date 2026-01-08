@@ -1,6 +1,7 @@
 
 import express from "express";
 import postsRouter from "./routers/posts.js";
+import notFound from "./middlewares/notFound.js";
 
 
 const app = express ();
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use("/posts", postsRouter);
 
 
+
+app.use(notFound);
 
 
 app.listen(port, function(){
