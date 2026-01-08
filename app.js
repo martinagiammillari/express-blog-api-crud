@@ -2,6 +2,7 @@
 import express from "express";
 import postsRouter from "./routers/posts.js";
 import notFound from "./middlewares/notFound.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 
 const app = express ();
@@ -13,7 +14,9 @@ app.use("/posts", postsRouter);
 
 
 
+
 app.use(notFound);
+app.use(errorHandler);
 
 
 app.listen(port, function(){
